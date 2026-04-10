@@ -22,7 +22,6 @@ import LockResetIcon from "@mui/icons-material/LockReset";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import AssessmentIcon from "@mui/icons-material/Assessment"; // Overall Status icon
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety"; // ✅ Health Status icon
-import CoolingSystem from "../Pages/CoolingSystem";
 
 const StyledListItemText = styled(ListItemText, {
   shouldForwardProp: (prop) => prop !== "collapsed",
@@ -39,7 +38,7 @@ function MainSidebar({ collapsed }) {
     caster: false,
     bof: false,
     furnace: false,
-    CoolingSystem: false,
+    cooling: false,
   });
 
   const toggleMenu = (key) => {
@@ -52,7 +51,7 @@ function MainSidebar({ collapsed }) {
       <ListItem disablePadding sx={{ display: "block" }}>
         <ListItemButton onClick={() => toggleMenu("cooling")}>
           <ListItemIcon>
-            <WhatshotIcon /> {/* you can change icon later */}
+            <WhatshotIcon />
           </ListItemIcon>
 
           {!collapsed && <ListItemText primary="Cooling System" />}
