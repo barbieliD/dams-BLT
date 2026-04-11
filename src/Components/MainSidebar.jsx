@@ -99,6 +99,14 @@ function MainSidebar({ collapsed }) {
             >
               <ListItemText primary="BF2" />
             </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/blast-furnace/cooling-system"
+              selected={location.pathname.startsWith("/blast-furnace/cooling-system")}
+              sx={{ pl: collapsed ? 2 : 4 }}
+            >
+              <ListItemText primary="Cooling System" />
+            </ListItemButton>
           </List>
         </Collapse>
       </ListItem>

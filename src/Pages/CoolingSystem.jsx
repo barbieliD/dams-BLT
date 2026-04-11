@@ -84,28 +84,7 @@ function Value({ value, unit, onClick, clickable = false }) {
   );
 }
 
-// Mini Card Component
-function MiniCard({ title, value, unit, onClick }) {
-  return (
-    <Box sx={{ flex: 1, minWidth: 0, }}>
-      <Box
-        sx={{
-          background: "#558ed5",
-          color: "black",
-          fontWeight: "bold",
-          textAlign: "center",
-          padding: "4px 6px",
-          fontSize: 20,
-        }}
-      >
-        {title}
-      </Box>
-      <Box sx={{ paddingTop: "2px" }}>
-        <Value value={value} unit={unit} onClick={onClick} clickable />
-      </Box>
-    </Box>
-  );
-}
+
 
 // Custom Modal Component using MUI Dialog
 function CoolingModal({ open, title, children, onClose }) {
@@ -263,7 +242,13 @@ export default function CoolingSystem() {
   ]);
 
   return (
-    <Box sx={{ backgroundColor: "black", minHeight: "110vh", color: "white", padding: 1.25 }}>
+    <Box 
+      sx={{ 
+        backgroundColor: '#d0cccc', 
+        minHeight: "110vh", 
+        color: "white", 
+        padding: 1.25 
+      }}>
       {/* Header */}
       <Box
         sx={{
@@ -282,29 +267,59 @@ export default function CoolingSystem() {
       {/* Top Metrics */}
       <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", marginBottom: 1.25 }}>
         {topMetrics.map((m) => (
-          <MiniCard
-            key={m.tagId ?? m.id}
-            title={m.title}
-            value={
-              m.id === "txthydPressure"
-                ? hydPressure
-                : m.id === "txthydpumpstatusCS"
-                  ? pumpStatus
-                  : latestByTag[m.tagId] ?? "NA"
-            }
-            unit={m.tagId ? m.unit : ""}
-            onClick={m.tagId ? () => showTrend(m.tagId) : undefined}
-          />
+          <Box key={m.tagId ?? m.id} sx={{ flex: 1, minWidth: 0 }}>
+            <Box
+              sx={{
+                background: "#558ed5",
+                color: "black",
+                fontWeight: "bold",
+                textAlign: "center",
+                padding: "4px 6px",
+                fontSize: 20,
+              }}
+            >
+              {m.title}
+            </Box>
+            <Box sx={{ paddingTop: "2px" }}>
+              <Value
+                value={
+                  m.id === "txthydPressure"
+                    ? hydPressure
+                    : m.id === "txthydpumpstatusCS"
+                      ? pumpStatus
+                      : latestByTag[m.tagId] ?? "NA"
+                }
+                unit={m.tagId ? m.unit : ""}
+                onClick={m.tagId ? () => showTrend(m.tagId) : undefined}
+                clickable
+              />
+            </Box>
+          </Box>
         ))}
       </Box>
 
       {/* Main Grid Layout */}
-      <Grid container spacing={1.25}>
+      <Box sx={{ 
+        display: "flex", 
+        flexDirection: { xs: "column", md: "row" }, 
+        gap: { xs: 1, md: 1 }, 
+        marginBottom: 1.25,
+        height: { xs: "auto", md: "75vh" }, // ✅ IMPORTANT
+        alignItems: "stretch", // ✅ force equal height
+      }}>
         {/* Left Side Metrics */}
-        <Grid item xs={12} sm={6} md={2}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1.75 }}>
+        <Box 
+          sx={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: 1.75, 
+            flex: { xs: "auto", md: 1 },
+            width: { xs: "100%", md: "auto" },
+            height: '100%',
+          }}
+          >
             {leftSideMetrics.map((m) => (
-              <Box key={m.tagId}>
+              <Box key={m.tagId} sx={{ flex: 1 }}>
                 <Box
                   sx={{
                     background: "#558ed5",
@@ -327,277 +342,239 @@ export default function CoolingSystem() {
                 </Box>
               </Box>
             ))}
-          </Box>
-        </Grid>
+        </Box>
 
         {/* Center Image Placeholder */}
-        <Grid item xs={12} sm={6} md={3}>
-          <Box
-            sx={{
-              width: "100%",
-              height: "75vh",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "rgba(255,255,255,0.75)",
-              fontWeight: 600,
-              overflow: "auto",
-            }}
-          >
-            <Box
-              component="img"
-              src={coolingSystemImage}
-              alt="Cooling System Diagram"
-              sx={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-              }}
-            />
-          </Box>
-        </Grid>
-
-        {/* Right Side Metrics */}
-        <Grid item xs={12} sm={6} md={2}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1.75 }}>
-            {rightSideMetrics.map((m) => (
-              <Box key={m.tagId}>
-                <Box
-                  sx={{
-                    background: "#558ed5",
-                    color: "black",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    padding: "2px 4px",
-                    fontSize: 14,
-                  }}
-                >
-                  {m.title}
-                </Box>
-                <Box sx={{ marginTop: 0.25 }}>
-                  <Value
-                    value={latestByTag[m.tagId] ?? "NA"}
-                    unit={m.unit}
-                    onClick={() => showTrend(m.tagId)}
-                    clickable
-                  />
-                </Box>
-              </Box>
-            ))}
-          </Box>
-        </Grid>
-
-        {/* Right Side Panels */}
-        <Grid item xs={12} sm={6} md={3}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            {/* Equipment Health */}
-            <Paper sx={{ border: "2px solid black", borderBottom: "none" }}>
-              <Box
-                sx={{
-                  background: "#558ed5",
-                  color: "black",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  padding: "6px 8px",
-                }}
-              >
-                <Typography variant="body2" id="txtCoolingPer">
-                  {equipmentHealthText}
-                </Typography>
-              </Box>
-            </Paper>
-
-            {/* Compliance Gauges */}
-            <Paper sx={{ border: "2px solid black", p: 0.75 }}>
-              <Box sx={{ display: "flex", gap: 0.75 }}>
-                {[
-                  { title: "COOLING SYSTEM MOTOR", key: "COOLINGSYSTEMMOTOR" },
-                  { title: "COOLING SYSTEM INSTR", key: "COOLSYSTEMINSTR" },
-                  { title: "SWITCH GEAR", key: "SWITCHGEAR" },
-                ].map((x) => (
-                  <Box key={x.key} sx={{ flex: 1 }}>
-                    <Box
-                      sx={{
-                        fontSize: 12,
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        backgroundColor: "#558ed5",
-                        color: "black",
-                        padding: "4px 6px",
-                      }}
-                    >
-                      {x.title}
-                    </Box>
-                    <Box
-                      id={
-                        x.key === "COOLINGSYSTEMMOTOR"
-                          ? "COOLINGSYSTEMMOTORchart-container1"
-                          : x.key === "COOLSYSTEMINSTR"
-                            ? "COOLSYSTEMINSTRchart-container2"
-                            : "COOLSYSTEMINSTRchart-container3"
-                      }
-                      sx={{
-                        height: 80,
-                        background: "rgba(255,255,255,0.06)",
-                        borderRadius: 0.75,
-                        marginTop: 0.5,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => setSelectedCompliance(x.title)}
-                      role="button"
-                      tabIndex={0}
-                    >
-                      <Typography variant="caption">Gauge placeholder</Typography>
-                    </Box>
-                  </Box>
-                ))}
-              </Box>
-            </Paper>
-
-            {/* Recent Alarm */}
-            <Paper sx={{ border: "2px solid black", p: 1 }}>
-              <Box sx={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", mb: 0.5 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                  Recent Alarm
-                </Typography>
-                <Box
-                  component="button"
-                  onClick={() => setSelectedCompliance("Alarm Details")}
-                  sx={{
-                    background: "transparent",
-                    border: "none",
-                    color: "deepskyblue",
-                    cursor: "pointer",
-                    fontSize: 12,
-                  }}
-                >
-                  View details
-                </Box>
-              </Box>
-              <Typography variant="body2" id="txtCoolingFirstLine" sx={{ marginTop: 0.75, color: "white" }}>
-                {recentAlarms.first}
-              </Typography>
-              <Typography variant="body2" id="txtCoolingSecondLine" sx={{ marginTop: 0.75, color: "white" }}>
-                {recentAlarms.second}
-              </Typography>
-            </Paper>
-
-            {/* Alert Counts */}
-            <Paper sx={{ border: "2px solid black", p: 0 }}>
-              <Grid container>
-                <Grid item xs={3} sx={{ background: "#16a34a", padding: 1.25 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 700, color: "black" }}>
-                    <span id="txtCoolingTotalAlaert">{alarmCounts.TOTAL}</span> Total Alerts
-                  </Typography>
-                </Grid>
-                <Grid item xs={3} sx={{ background: "#0ea5e9", padding: 1.25 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 700, color: "black" }}>
-                    <span id="txtCoolingOpen">{alarmCounts.OPEN}</span> Open Alerts
-                  </Typography>
-                </Grid>
-                <Grid item xs={3} sx={{ background: "#f59e0b", padding: 1.25 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 700, color: "black" }}>
-                    <span id="txtCoolingClosed">{alarmCounts.CLOSE}</span> Closed Alert
-                  </Typography>
-                </Grid>
-                <Grid item xs={3} sx={{ background: "white", padding: 1.25 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 700, color: "black" }}>
-                    <span id="txtCoolingTotalAck">{alarmCounts.ACK}</span> Ack Alert
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Paper>
-
-            {/* Alerts Bar Chart */}
-            <Paper sx={{ border: "2px solid black" }}>
-              <Box
-                id="Cooling-container"
-                sx={{ height: 130, display: "flex", alignItems: "center", justifyContent: "center" }}
-              >
-                <Typography variant="body2">Alerts bar chart placeholder</Typography>
-              </Box>
-            </Paper>
-
-            {/* SAP PM MO Compliance */}
-            <Paper sx={{ border: "2px solid black", borderBottom: "none" }}>
-              <Box
-                sx={{
-                  background: "#558ed5",
-                  color: "black",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  padding: "8px 10px",
-                }}
-              >
-                <Typography variant="body2">SAP PM MO Compliance</Typography>
-              </Box>
-            </Paper>
-            <Paper sx={{ border: "2px solid black" }}>
-              <Box
-                id="sap-pmo"
-                sx={{ height: 130, display: "flex", alignItems: "center", justifyContent: "center" }}
-              >
-                <Typography variant="body2">Compliance chart placeholder</Typography>
-              </Box>
-            </Paper>
-          </Box>
-        </Grid>
-      </Grid>
-
-      {/* Trend Modal */}
-      <CoolingModal
-        open={selectedTagForTrend !== null}
-        title="Digital Asset Management System"
-        onClose={() => setSelectedTagForTrend(null)}
-      >
-        <Typography variant="subtitle2" sx={{ fontWeight: 700, marginBottom: 1.25 }}>
-          Trend for Tag ID: {selectedTagForTrend}
-        </Typography>
         <Box
-          id="trendGraph"
           sx={{
-            height: 480,
-            border: "1px solid #e5e7eb",
+            flex: { xs: "auto", md: 2.5 },
+            height: "100%",
+            width: { xs: "100%", md: "auto" },
+            border: "1px solid rgba(255,255,255,0.12)",
             borderRadius: 1,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "#111827",
+            color: "rgba(255,255,255,0.75)",
+            fontWeight: 600,
+            overflow: "auto",
           }}
         >
-          <Typography variant="body2">Trend graph integration placeholder</Typography>
+          <Box
+            component="img"
+            src={coolingSystemImage}
+            alt="Cooling System Diagram"
+            sx={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              width: "100%",
+              objectFit: "contain",
+            }}
+          />
         </Box>
-      </CoolingModal>
 
-      {/* Compliance Modal */}
-      <CoolingModal
-        open={selectedCompliance !== null}
-        title={`Equipment Health (${selectedCompliance ?? ""})`}
-        onClose={() => setSelectedCompliance(null)}
-      >
-        <Box sx={{ display: "flex", gap: 1.75, flexWrap: "wrap" }}>
-          <Box>
-            <Typography variant="body2">
-              <b>Alert Comp. :</b> <span id="AlertComp">—</span>
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2">
-              <b>MO Comp. :</b> <span id="MoComp">—</span>
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2">
-              <b>NO Comp. :</b> <span id="NoComp">—</span>
-            </Typography>
-          </Box>
+        {/* Right Side Metrics */}
+        <Box 
+          sx={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: 1.75,
+            flex: { xs: "auto", md: 1 },
+            width: { xs: "100%", md: "auto" },
+            height: "100%",
+          }}
+        >
+          {rightSideMetrics.map((m) => (
+            <Box key={m.tagId} sx={{ flex: 1 }}>
+              <Box
+                sx={{
+                  background: "#558ed5",
+                  color: "black",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  padding: "2px 4px",
+                  fontSize: 14,
+                }}
+              >
+                {m.title}
+              </Box>
+              <Box sx={{ marginTop: 0.25 }}>
+                <Value
+                  value={latestByTag[m.tagId] ?? "NA"}
+                  unit={m.unit}
+                  onClick={() => showTrend(m.tagId)}
+                  clickable
+                />
+              </Box>
+            </Box>
+          ))}
         </Box>
-      </CoolingModal>
+
+        {/* Right Side Panels */}
+        <Box sx={{ 
+          flex: { xs: "auto", md: 2.5 },
+          width: { xs: "100%", md: "auto" },
+          height: "100%",
+          display: "flex", 
+          flexDirection: "column", 
+          gap: 1 
+        }}>
+          {/* Equipment Health */}
+          <Paper sx={{ border: "2px solid black", borderBottom: "none" }}>
+            <Box
+              sx={{
+                background: "#558ed5",
+                color: "black",
+                fontWeight: "bold",
+                textAlign: "center",
+                padding: "6px 8px",
+              }}
+            >
+              <Typography variant="body2" id="txtCoolingPer">
+                {equipmentHealthText}
+              </Typography>
+            </Box>
+          </Paper>
+
+          {/* Compliance Gauges */}
+          <Paper sx={{ border: "2px solid black", p: 0.75 }}>
+            <Box sx={{ display: "flex", gap: 0.75 }}>
+              {[
+                { title: "COOLING SYSTEM MOTOR", key: "COOLINGSYSTEMMOTOR" },
+                { title: "COOLING SYSTEM INSTR", key: "COOLSYSTEMINSTR" },
+                { title: "SWITCH GEAR", key: "SWITCHGEAR" },
+              ].map((x) => (
+                <Box key={x.key} sx={{ flex: 1 }}>
+                  <Box
+                    sx={{
+                      fontSize: 12,
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      backgroundColor: "#558ed5",
+                      color: "black",
+                      padding: "4px 6px",
+                    }}
+                  >
+                    {x.title}
+                  </Box>
+                  <Box
+                    id={
+                      x.key === "COOLINGSYSTEMMOTOR"
+                        ? "COOLINGSYSTEMMOTORchart-container1"
+                        : x.key === "COOLSYSTEMINSTR"
+                          ? "COOLSYSTEMINSTRchart-container2"
+                          : "COOLSYSTEMINSTRchart-container3"
+                    }
+                    sx={{
+                      height: 80,
+                      background: "rgba(255,255,255,0.06)",
+                      borderRadius: 0.75,
+                      marginTop: 0.5,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setSelectedCompliance(x.title)}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <Typography variant="caption">Gauge placeholder</Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Paper>
+
+          {/* Recent Alarm */}
+          <Paper sx={{ border: "2px solid black", p: 1 }}>
+            <Box sx={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", mb: 0.5 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                Recent Alarm
+              </Typography>
+              <Box
+                component="button"
+                onClick={() => setSelectedCompliance("Alarm Details")}
+                sx={{
+                  background: "transparent",
+                  border: "none",
+                  color: "deepskyblue",
+                  cursor: "pointer",
+                  fontSize: 12,
+                }}
+              >
+                View details
+              </Box>
+            </Box>
+            <Typography variant="body2" id="txtCoolingFirstLine" sx={{ marginTop: 0.75, color: "white" }}>
+              {recentAlarms.first}
+            </Typography>
+            <Typography variant="body2" id="txtCoolingSecondLine" sx={{ marginTop: 0.75, color: "white" }}>
+              {recentAlarms.second}
+            </Typography>
+          </Paper>
+
+          {/* Alert Counts */}
+          <Paper sx={{ border: "2px solid black", p: 0 }}>
+            <Grid container>
+              <Grid item xs={3} sx={{ background: "#16a34a", padding: 1.25 }}>
+                <Typography variant="caption" sx={{ fontWeight: 700, color: "black" }}>
+                  <span id="txtCoolingTotalAlaert">{alarmCounts.TOTAL}</span> Total Alerts
+                </Typography>
+              </Grid>
+              <Grid item xs={3} sx={{ background: "#0ea5e9", padding: 1.25 }}>
+                <Typography variant="caption" sx={{ fontWeight: 700, color: "black" }}>
+                  <span id="txtCoolingOpen">{alarmCounts.OPEN}</span> Open Alerts
+                </Typography>
+              </Grid>
+              <Grid item xs={3} sx={{ background: "#f59e0b", padding: 1.25 }}>
+                <Typography variant="caption" sx={{ fontWeight: 700, color: "black" }}>
+                  <span id="txtCoolingClosed">{alarmCounts.CLOSE}</span> Closed Alert
+                </Typography>
+              </Grid>
+              <Grid item xs={3} sx={{ background: "white", padding: 1.25 }}>
+                <Typography variant="caption" sx={{ fontWeight: 700, color: "black" }}>
+                  <span id="txtCoolingTotalAck">{alarmCounts.ACK}</span> Ack Alert
+                </Typography>
+              </Grid>
+            </Grid>
+          </Paper>
+
+          {/* Alerts Bar Chart */}
+          <Paper sx={{ border: "2px solid black" }}>
+            <Box
+              id="Cooling-container"
+              sx={{ height: 130, display: "flex", alignItems: "center", justifyContent: "center" }}
+            >
+              <Typography variant="body2">Alerts bar chart placeholder</Typography>
+            </Box>
+          </Paper>
+
+          {/* SAP PM MO Compliance */}
+          <Paper sx={{ border: "2px solid black", borderBottom: "none" }}>
+            <Box
+              sx={{
+                background: "#558ed5",
+                color: "black",
+                fontWeight: "bold",
+                textAlign: "center",
+                padding: "8px 10px",
+              }}
+            >
+              <Typography variant="body2">SAP PM MO Compliance</Typography>
+            </Box>
+          </Paper>
+          <Paper sx={{ border: "2px solid black" }}>
+            <Box
+              id="sap-pmo"
+              sx={{ height: 130, display: "flex", alignItems: "center", justifyContent: "center" }}
+            >
+              <Typography variant="body2">Compliance chart placeholder</Typography>
+            </Box>
+          </Paper>
+        </Box>
+      </Box>
+
     </Box>
   );
 }

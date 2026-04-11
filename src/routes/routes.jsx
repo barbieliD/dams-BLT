@@ -37,7 +37,7 @@ const routes = [
       { path: "blast-furnace/bf2", element: <ComingSoon /> },
 
       // Cooling System Route
-      {path: "cooling-system", element: <CoolingSystem />},
+      {path: "blast-furnace/cooling-system", element: <CoolingSystem />},
                        
       // Caster Routes
       { path: "caster/c1", element: <ComingSoon /> },
