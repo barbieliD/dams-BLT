@@ -22,6 +22,12 @@ import LockResetIcon from "@mui/icons-material/LockReset";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import AssessmentIcon from "@mui/icons-material/Assessment"; // Overall Status icon
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety"; // ✅ Health Status icon
+import WaterIcon from "@mui/icons-material/Water";
+import AutoGraphIcon from "@mui/icons-material/AutoGraph";
+import BoltIcon from "@mui/icons-material/Bolt";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import OpacityIcon from "@mui/icons-material/Opacity";
 
 const StyledListItemText = styled(ListItemText, {
   shouldForwardProp: (prop) => prop !== "collapsed",
@@ -38,7 +44,7 @@ function MainSidebar({ collapsed }) {
     caster: false,
     bof: false,
     furnace: false,
-    cooling: false,
+    damsBlt: false,
   });
 
   const toggleMenu = (key) => {
@@ -47,27 +53,74 @@ function MainSidebar({ collapsed }) {
 
   return (
     <List>
-      {/* Cooling System */}
+      {/* DAMS-BLT */}
       <ListItem disablePadding sx={{ display: "block" }}>
-        <ListItemButton onClick={() => toggleMenu("cooling")}>
+        <ListItemButton onClick={() => toggleMenu("damsBlt")}>
           <ListItemIcon>
-            <WhatshotIcon />
+            <WaterIcon />
           </ListItemIcon>
 
-          {!collapsed && <ListItemText primary="Cooling System" />}
+          {!collapsed && <ListItemText primary="DAMS-BLT" />}
 
-          {!collapsed && (openMenus.cooling ? <ExpandLess /> : <ExpandMore />)}
+          {!collapsed && (openMenus.damsBlt ? <ExpandLess /> : <ExpandMore />)}
         </ListItemButton>
 
-        <Collapse in={openMenus.cooling} timeout="auto" unmountOnExit>
+        <Collapse in={openMenus.damsBlt} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
+            <ListItemButton
+              component={Link}
+              to="/dams-blt"
+              selected={location.pathname.startsWith("/dams-blt")}
+              sx={{ pl: collapsed ? 2 : 4 }}
+            >
+              <ListItemIcon>
+                <AutoGraphIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Overview" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/charging-system"
+              selected={location.pathname.startsWith("/charging-system")}
+              sx={{ pl: collapsed ? 2 : 4 }}
+            >
+              <ListItemIcon>
+                <BoltIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Charging System" />
+            </ListItemButton>
             <ListItemButton
               component={Link}
               to="/cooling-system"
               selected={location.pathname.startsWith("/cooling-system")}
               sx={{ pl: collapsed ? 2 : 4 }}
             >
-              <ListItemText primary="Overview" />
+              <ListItemIcon>
+                <AcUnitIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Cooling System" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/valve-system"
+              selected={location.pathname.startsWith("/valve-system")}
+              sx={{ pl: collapsed ? 2 : 4 }}
+            >
+              <ListItemIcon>
+                <SettingsInputComponentIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Valve System" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/hydraulic-view"
+              selected={location.pathname.startsWith("/hydraulic-view")}
+              sx={{ pl: collapsed ? 2 : 4 }}
+            >
+              <ListItemIcon>
+                <OpacityIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Hydraulic View" />
             </ListItemButton>
           </List>
         </Collapse>
@@ -98,14 +151,6 @@ function MainSidebar({ collapsed }) {
               sx={{ pl: collapsed ? 2 : 4 }}
             >
               <ListItemText primary="BF2" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/blast-furnace/cooling-system"
-              selected={location.pathname.startsWith("/blast-furnace/cooling-system")}
-              sx={{ pl: collapsed ? 2 : 4 }}
-            >
-              <ListItemText primary="Cooling System" />
             </ListItemButton>
           </List>
         </Collapse>

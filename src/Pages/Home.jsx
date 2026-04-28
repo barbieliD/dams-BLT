@@ -82,7 +82,7 @@ function Home() {
             letterSpacing: 1.5,
           }}
         >
-          TATA STEEL KALINGANAGAR fdf
+          TATA STEEL KALINGANAGAR
         </Typography>
       </Box>
 
