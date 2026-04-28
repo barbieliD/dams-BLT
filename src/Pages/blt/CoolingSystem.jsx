@@ -958,11 +958,11 @@ export default function CoolingSystem() {
           <div>
             <h1 className="cooling-title">Cooling Circuit Overview</h1>
             <p className="cooling-subtitle">
-              React conversion of the legacy DAMS cooling system view. This version keeps the same operating signals and equipment-health intent, but presents them in a modern dashboard layout backed by mock API responses that can be replaced later.
+              This version keeps the same operating signals and equipment-health intent, but presents them in a modern dashboard layout backed by mock API responses that can be replaced later.
             </p>
             <div className="cooling-badge-row">
               <span className="cooling-badge">Asset: BLT Cooling</span>
-              <span className="cooling-badge">Mode: Mock API</span>
+              {/* <span className="cooling-badge">Mode: Mock API</span> */}
               <span className="cooling-badge">Refresh: 5 min</span>
             </div>
           </div>

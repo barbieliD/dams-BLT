@@ -875,11 +875,11 @@ export default function ValveSystem() {
           <div>
             <h1>Valve Response Overview</h1>
             <p>
-              React conversion of the DAMS valve monitoring view. This version keeps the original top KPIs, per-valve open and close response timings, equipment health, alarms, and maintenance compliance in a more modern operations dashboard.
+              This version keeps the original top KPIs, per-valve open and close response timings, equipment health, alarms, and maintenance compliance in a more modern operations dashboard.
             </p>
             <div className="tag-row">
               <span className="tag">Asset: BLT Valve</span>
-              <span className="tag">Source: Mock API</span>
+              {/* <span className="tag">Source: Mock API</span> */}
               <span className="tag">Refresh: 5 min</span>
             </div>
           </div>

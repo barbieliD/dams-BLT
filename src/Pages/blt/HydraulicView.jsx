@@ -951,11 +951,11 @@ export default function HydraulicView() {
           <div>
             <h1>Hydraulic Operations Overview</h1>
             <p>
-              React conversion of the DAMS hydraulic monitoring view. This version keeps the original top KPIs, pump and oil condition indicators, hydraulic line diagnostics, equipment health, alarms, and maintenance compliance while presenting them in a modern operational dashboard.
+              This version keeps the original top KPIs, pump and oil condition indicators, hydraulic line diagnostics, equipment health, alarms, and maintenance compliance while presenting them in a modern operational dashboard.
             </p>
             <div className="tag-row">
               <span className="tag">Asset: BLT Hydraulic</span>
-              <span className="tag">Source: Mock API</span>
+              {/* <span className="tag">Source: Mock API</span> */}
               <span className="tag">Refresh: 5 min</span>
             </div>
           </div>

@@ -8,6 +8,7 @@ import {
   ListItemText,
   Collapse,
   styled,
+  Tooltip,
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -55,73 +56,85 @@ function MainSidebar({ collapsed }) {
     <List>
       {/* DAMS-BLT */}
       <ListItem disablePadding sx={{ display: "block" }}>
-        <ListItemButton onClick={() => toggleMenu("damsBlt")}>
-          <ListItemIcon>
-            <WaterIcon />
-          </ListItemIcon>
+        <Tooltip title={collapsed ? "DAMS-BLT" : ""} placement="right" arrow>
+          <ListItemButton onClick={() => toggleMenu("damsBlt")}>
+            <ListItemIcon>
+              <WaterIcon />
+            </ListItemIcon>
 
-          {!collapsed && <ListItemText primary="DAMS-BLT" />}
+            {!collapsed && <ListItemText primary="DAMS-BLT" />}
 
-          {!collapsed && (openMenus.damsBlt ? <ExpandLess /> : <ExpandMore />)}
-        </ListItemButton>
+            {!collapsed && (openMenus.damsBlt ? <ExpandLess /> : <ExpandMore />)}
+          </ListItemButton>
+        </Tooltip>
 
         <Collapse in={openMenus.damsBlt} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton
-              component={Link}
-              to="/dams-blt"
-              selected={location.pathname.startsWith("/dams-blt")}
-              sx={{ pl: collapsed ? 2 : 4 }}
-            >
-              <ListItemIcon>
-                <AutoGraphIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Overview" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/charging-system"
-              selected={location.pathname.startsWith("/charging-system")}
-              sx={{ pl: collapsed ? 2 : 4 }}
-            >
-              <ListItemIcon>
-                <BoltIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Charging System" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/cooling-system"
-              selected={location.pathname.startsWith("/cooling-system")}
-              sx={{ pl: collapsed ? 2 : 4 }}
-            >
-              <ListItemIcon>
-                <AcUnitIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Cooling System" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/valve-system"
-              selected={location.pathname.startsWith("/valve-system")}
-              sx={{ pl: collapsed ? 2 : 4 }}
-            >
-              <ListItemIcon>
-                <SettingsInputComponentIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Valve System" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/hydraulic-view"
-              selected={location.pathname.startsWith("/hydraulic-view")}
-              sx={{ pl: collapsed ? 2 : 4 }}
-            >
-              <ListItemIcon>
-                <OpacityIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Hydraulic View" />
-            </ListItemButton>
+            <Tooltip title={collapsed ? "Overview" : ""} placement="right" arrow>
+              <ListItemButton
+                component={Link}
+                to="/dams-blt"
+                selected={location.pathname.startsWith("/dams-blt")}
+                sx={{ pl: collapsed ? 2 : 4 }}
+              >
+                <ListItemIcon>
+                  <AutoGraphIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Overview" />
+              </ListItemButton>
+            </Tooltip>
+            <Tooltip title={collapsed ? "Charging System" : ""} placement="right" arrow>
+              <ListItemButton
+                component={Link}
+                to="/charging-system"
+                selected={location.pathname.startsWith("/charging-system")}
+                sx={{ pl: collapsed ? 2 : 4 }}
+              >
+                <ListItemIcon>
+                  <BoltIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Charging System" />
+              </ListItemButton>
+            </Tooltip>
+            <Tooltip title={collapsed ? "Cooling System" : ""} placement="right" arrow>
+              <ListItemButton
+                component={Link}
+                to="/cooling-system"
+                selected={location.pathname.startsWith("/cooling-system")}
+                sx={{ pl: collapsed ? 2 : 4 }}
+              >
+                <ListItemIcon>
+                  <AcUnitIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Cooling System" />
+              </ListItemButton>
+            </Tooltip>
+            <Tooltip title={collapsed ? "Valve System" : ""} placement="right" arrow>
+              <ListItemButton
+                component={Link}
+                to="/valve-system"
+                selected={location.pathname.startsWith("/valve-system")}
+                sx={{ pl: collapsed ? 2 : 4 }}
+              >
+                <ListItemIcon>
+                  <SettingsInputComponentIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Valve System" />
+              </ListItemButton>
+            </Tooltip>
+            <Tooltip title={collapsed ? "Hydraulic View" : ""} placement="right" arrow>
+              <ListItemButton
+                component={Link}
+                to="/hydraulic-view"
+                selected={location.pathname.startsWith("/hydraulic-view")}
+                sx={{ pl: collapsed ? 2 : 4 }}
+              >
+                <ListItemIcon>
+                  <OpacityIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Hydraulic View" />
+              </ListItemButton>
+            </Tooltip>
           </List>
         </Collapse>
       </ListItem>

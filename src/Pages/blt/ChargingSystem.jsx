@@ -926,11 +926,11 @@ export default function ChargingSystem() {
           <div>
             <h1>Charging Flow Overview</h1>
             <p>
-              React conversion of the legacy DAMS charging view. The original hopper timings, chute angles, furnace readings, motor currents, alarms, and equipment-health sections are preserved in a cleaner dashboard that is ready for future API integration.
+              The original hopper timings, chute angles, furnace readings, motor currents, alarms, and equipment-health sections are preserved in a cleaner dashboard that is ready for future API integration.
             </p>
             <div className="chip-row">
               <span className="chip">Asset: BLT Charging</span>
-              <span className="chip">Source: Mock API</span>
+              {/* <span className="chip">Source: Mock API</span> */}
               <span className="chip">Refresh: 5 min</span>
             </div>
           </div>
