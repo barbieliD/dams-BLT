@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import BltDashboardToolbar from "../../Components/BltDashboardToolbar";
+import bltOverviewImage from "../../assets/Images/blt.png";
 import {
   fetchBLTAlarmSummaryMock,
   fetchBLTAlertDistributionMock,
@@ -256,34 +257,17 @@ html[data-blt-theme="light"] .blt-page {
   display: grid;
   place-items: center;
   border-radius: 30px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  background: rgba(3, 7, 13, 0.78);
   border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
 }
-.blt-icon {
-  width: min(320px, 100%);
-  aspect-ratio: 1 / 1;
-  border-radius: 36px;
-  position: relative;
-  background:
-    radial-gradient(circle at 50% 35%, rgba(0,194,255,0.44), rgba(0,194,255,0.12) 38%, transparent 52%),
-    linear-gradient(180deg, #143149, #08111a);
-  border: 1px solid rgba(133, 211, 228, 0.24);
-}
-.blt-icon::before,
-.blt-icon::after {
-  content: "";
-  position: absolute;
-  left: 12%;
-  width: 76%;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(0,194,255,0.85), transparent);
-}
-.blt-icon::before {
-  top: 54px;
-}
-.blt-icon::after {
-  bottom: 54px;
+.blt-overview-image {
+  width: auto;
+  max-width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 .section-grid {
   display: grid;
@@ -993,7 +977,7 @@ export default function NewBLTHMI() {
                 <div className="graphic-title">BLT overview</div>
                 <div className="graphic-shell">
                   <div className="blt-visual">
-                    <div className="blt-icon" />
+                    <img className="blt-overview-image" src={bltOverviewImage} alt="Bell Less Top equipment overview" />
                   </div>
 
                   <div className="section-grid">

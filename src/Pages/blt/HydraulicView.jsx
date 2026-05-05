@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import BltDashboardToolbar from "../../Components/BltDashboardToolbar";
+import hydraulicSystemImage from "../../assets/Images/HydraulicSystem.png";
 import {
   fetchHydraulicAlarmSummaryMock,
   fetchHydraulicDashboardMock,
@@ -247,35 +248,15 @@ html[data-blt-theme="light"] .hydraulic-page {
   display: grid;
   place-items: center;
   border-radius: 30px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  background: rgba(3, 7, 13, 0.78);
   border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
 }
-.tank-visual {
-  width: min(300px, 100%);
-  aspect-ratio: 1 / 1;
-  border-radius: 34px;
-  position: relative;
-  background:
-    radial-gradient(circle at 50% 34%, rgba(38,198,218,0.55), rgba(38,198,218,0.12) 38%, transparent 52%),
-    linear-gradient(180deg, #173247, #08111a);
-  border: 1px solid rgba(128, 213, 224, 0.24);
-  box-shadow: inset 0 0 50px rgba(38,198,218,0.12);
-}
-.tank-visual::before,
-.tank-visual::after {
-  content: "";
-  position: absolute;
-  left: 12%;
-  width: 76%;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(38,198,218,0.85), transparent);
-}
-.tank-visual::before {
-  top: 54px;
-}
-.tank-visual::after {
-  bottom: 54px;
+.hydraulic-system-image {
+  width: 100%;
+  max-height: 440px;
+  object-fit: contain;
+  display: block;
 }
 .flow-grid {
   display: grid;
@@ -981,7 +962,7 @@ export default function HydraulicView() {
                 <div className="schematic-title">Hydraulic process overview</div>
                 <div className="hydraulic-core">
                   <div className="tank">
-                    <div className="tank-visual" />
+                    <img className="hydraulic-system-image" src={hydraulicSystemImage} alt="Hydraulic system overview" />
                   </div>
 
                   <div className="flow-grid">

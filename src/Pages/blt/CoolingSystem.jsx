@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import BltDashboardToolbar from "../../Components/BltDashboardToolbar";
+import coolingSystemImage from "../../assets/Images/CoolingSystem.png";
 import {
   fetchCoolingAlarmSummaryMock,
   fetchCoolingDashboardMock,
@@ -262,52 +263,16 @@ html[data-blt-theme="light"] .cooling-page {
   place-items: center;
   min-height: 240px;
   border-radius: 28px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  background: rgba(3, 7, 13, 0.78);
   border: 1px solid rgba(132, 162, 198, 0.2);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  overflow: hidden;
 }
-.vessel-core {
-  width: min(280px, 100%);
-  aspect-ratio: 1 / 1;
-  border-radius: 34px;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(76, 201, 240, 0.24), transparent 32%),
-    linear-gradient(180deg, #12314f, #0a1d31);
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(124, 170, 214, 0.24);
-  position: relative;
-}
-.vessel-core::before,
-.vessel-core::after {
-  content: "";
-  position: absolute;
-  width: 78%;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(76, 201, 240, 0.1), rgba(76, 201, 240, 0.85), rgba(76, 201, 240, 0.1));
-}
-.vessel-core::before {
-  top: 36px;
-}
-.vessel-core::after {
-  bottom: 36px;
-}
-.vessel-rings {
-  width: 65%;
-  height: 65%;
-  border-radius: 50%;
-  border: 12px solid rgba(120, 164, 205, 0.18);
-  display: grid;
-  place-items: center;
-  position: relative;
-}
-.vessel-rings::before {
-  content: "";
-  width: 72%;
-  height: 72%;
-  border-radius: 50%;
-  border: 10px solid rgba(74, 222, 128, 0.2);
+.cooling-system-image {
+  width: 100%;
+  max-height: 440px;
+  object-fit: contain;
+  display: block;
 }
 .process-pipes {
   display: grid;
@@ -987,9 +952,7 @@ export default function CoolingSystem() {
                 <div className="schematic-title">Process overview</div>
                 <div className="schematic-main">
                   <div className="process-vessel">
-                    <div className="vessel-core">
-                      <div className="vessel-rings" />
-                    </div>
+                    <img className="cooling-system-image" src={coolingSystemImage} alt="Cooling system overview" />
                   </div>
 
                   <div className="process-pipes">

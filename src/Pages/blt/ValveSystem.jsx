@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import BltDashboardToolbar from "../../Components/BltDashboardToolbar";
+import valveSystemImage from "../../assets/Images/valveSystem.png";
 import {
   fetchValveAlarmSummaryMock,
   fetchValveAlertDistributionMock,
@@ -163,8 +164,74 @@ html[data-blt-theme="light"] .valve-page {
   grid-template-columns: minmax(0, 2.35fr) minmax(380px, 1fr);
   gap: 18px;
 }
-.matrix-panel {
-  padding: 18px;
+.valve-overview-panel {
+  margin-bottom: 18px;
+  padding: 22px;
+}
+.valve-overview-title {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--title-accent);
+  font-size: 12px;
+}
+.valve-overview-layout {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(320px, 1.35fr) minmax(180px, 0.8fr);
+  gap: 16px;
+  align-items: center;
+}
+.valve-overview-column {
+  display: grid;
+  gap: 16px;
+}
+.valve-overview-visual {
+  min-height: 320px;
+  display: grid;
+  place-items: center;
+  border-radius: 30px;
+  background: rgba(3, 7, 13, 0.78);
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.valve-system-image {
+  width: auto;
+  max-width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+.overview-valve-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(170,186,214,0.14);
+  background: rgba(255,255,255,0.04);
+}
+.overview-valve-title {
+  padding: 8px 12px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--inverse-text);
+  background: #5b9be7;
+}
+.overview-valve-values {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px;
+  background: rgba(255,255,255,0.08);
+}
+.overview-valve-values button {
+  border: 0;
+  border-radius: 4px;
+  padding: 10px 6px;
+  cursor: pointer;
+  color: var(--inverse-text);
+  background: rgba(255,255,255,0.86);
+  font-weight: 800;
+  font-size: 16px;
 }
 .matrix-head {
   display: flex;
@@ -532,6 +599,9 @@ html[data-blt-theme="light"] .valve-page {
   .metric-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+  .valve-overview-layout {
+    grid-template-columns: 1fr;
+  }
   .valve-grid,
   .flow-summary {
     grid-template-columns: 1fr;
@@ -794,8 +864,6 @@ export default function ValveSystem() {
   }
 
   const alertMax = Math.max(...alertDistribution.map((item) => item.value), 1);
-  const hydraulicPressure = findById(dashboard.headerMetrics, 1047) || findById(dashboard.headerMetrics, 1048);
-  const pumpStatus = findById(dashboard.headerMetrics, "pump-status");
   const searchItems = [
     ...dashboard.headerMetrics.map((item) => ({ ...item, group: "Header KPIs" })),
     ...dashboard.valveCards.flatMap((item) => [
@@ -849,11 +917,8 @@ export default function ValveSystem() {
     !selectedItem.detail &&
     selectedItem.id !== "pump-status" &&
     typeof selectedItem.value !== "string";
-  const valveRanked = [...dashboard.valveCards]
-    .map((item) => ({ ...item, total: Number(item.open) + Number(item.close) }))
-    .sort((a, b) => a.total - b.total);
-  const fastestValve = valveRanked[0];
-  const slowestValve = valveRanked[valveRanked.length - 1];
+  const leftValveCards = dashboard.valveCards.filter((item) => item.label.endsWith("-1"));
+  const rightValveCards = dashboard.valveCards.filter((item) => item.label.endsWith("-2"));
 
   return (
     <div className="valve-page">
@@ -892,84 +957,49 @@ export default function ValveSystem() {
         </section>
 
         <section className="main-grid">
-          <div className="panel matrix-panel">
-            <div className="matrix-head">
-              <div>
-                <h2>Valve Response Matrix</h2>
-                <p>Each card reflects the legacy open/close response-time tiles from the MVC view. Click a response time to open a mock trend preview.</p>
-              </div>
-              <div className="legend">
-                <span><i style={{ background: "#4ade80" }} /> Healthy</span>
-                <span><i style={{ background: "#fb7185" }} /> Watch</span>
-              </div>
-            </div>
-
-            <div className="valve-grid">
-              {dashboard.valveCards.map((item) => {
-                const openWidth = Math.min((Number(item.open) / 15) * 100, 100);
-                const closeWidth = Math.min((Number(item.close) / 15) * 100, 100);
-                return (
-                  <div className="valve-card" key={item.key}>
-                    <div className="valve-top">
-                      <div className="valve-title">
-                        <strong>{item.label}</strong>
-                        <small>{item.detailLabel} response diagnostics</small>
+          <div>
+            <div className="panel valve-overview-panel">
+              <div className="valve-overview-title">Valve system overview</div>
+              <div className="valve-overview-layout">
+                <div className="valve-overview-column">
+                  {leftValveCards.map((item) => (
+                    <div className="overview-valve-card" key={item.key}>
+                      <div className="overview-valve-title">{item.label}</div>
+                      <div className="overview-valve-values">
+                        <button type="button" onClick={() => setSelectedItem({ id: item.openTag, label: `${item.label} Open Response`, unit: "sec", value: item.open })}>
+                          {formatMetric(item.open, "sec")} sec
+                        </button>
+                        <button type="button" onClick={() => setSelectedItem({ id: item.closeTag, label: `${item.label} Close Response`, unit: "sec", value: item.close })}>
+                          {formatMetric(item.close, "sec")} sec
+                        </button>
                       </div>
-                      <span className={`status-pill ${item.status === "Watch" ? "status-watch" : "status-ok"}`}>
-                        {item.status}
-                      </span>
                     </div>
+                  ))}
+                </div>
 
-                    <div className="response-grid">
-                      <button type="button" className="response-box" onClick={() => setSelectedItem({ id: item.openTag, label: `${item.label} Open Response`, unit: "sec", value: item.open })} style={{ textAlign: "left" }}>
-                        <span>Open response</span>
-                        <strong>{formatMetric(item.open, "sec")} sec</strong>
-                        <div className="response-track">
-                          <div style={{ width: `${openWidth}%`, background: openWidth > 90 ? "#fb7185" : "linear-gradient(90deg, #4ade80, #22c55e)" }} />
-                        </div>
-                      </button>
+                <div className="valve-overview-visual">
+                  <img className="valve-system-image" src={valveSystemImage} alt="Valve system overview" />
+                </div>
 
-                      <button type="button" className="response-box" onClick={() => setSelectedItem({ id: item.closeTag, label: `${item.label} Close Response`, unit: "sec", value: item.close })} style={{ textAlign: "left" }}>
-                        <span>Close response</span>
-                        <strong>{formatMetric(item.close, "sec")} sec</strong>
-                        <div className="response-track">
-                          <div style={{ width: `${closeWidth}%`, background: closeWidth > 90 ? "#fb7185" : "linear-gradient(90deg, #f59e0b, #fbbf24)" }} />
-                        </div>
-                      </button>
+                <div className="valve-overview-column">
+                  {rightValveCards.map((item) => (
+                    <div className="overview-valve-card" key={item.key}>
+                      <div className="overview-valve-title">{item.label}</div>
+                      <div className="overview-valve-values">
+                        <button type="button" onClick={() => setSelectedItem({ id: item.openTag, label: `${item.label} Open Response`, unit: "sec", value: item.open })}>
+                          {formatMetric(item.open, "sec")} sec
+                        </button>
+                        <button type="button" onClick={() => setSelectedItem({ id: item.closeTag, label: `${item.label} Close Response`, unit: "sec", value: item.close })}>
+                          {formatMetric(item.close, "sec")} sec
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="flow-summary">
-              <div className="flow-card">
-                <small>Hydraulic Pressure</small>
-                <strong>{formatMetric(hydraulicPressure?.value, "bar")} bar</strong>
-                <div className="track">
-                  <div style={{ width: percentWidth(hydraulicPressure?.value, 0.5) }} />
+                  ))}
                 </div>
               </div>
-              <div className="flow-card">
-                <small>Pump Status</small>
-                <strong>{pumpStatus?.value || "NA"}</strong>
-                <div className="track">
-                  <div style={{ width: "86%" }} />
-                </div>
-              </div>
-              <div className="flow-card">
-                <small>Fastest Valve</small>
-                <strong>{fastestValve?.label || "NA"}</strong>
-                <div className="metric-unit">Lowest combined open/close time in the current response set</div>
-              </div>
-              <div className="flow-card">
-                <small>Slowest Valve</small>
-                <strong>{slowestValve?.label || "NA"}</strong>
-                <div className="metric-unit">Highest combined open/close time in the current response set</div>
-              </div>
             </div>
+
           </div>
-
           <aside className="sidebar">
             <div className="panel sidebar-panel">
               <div className="health-header">

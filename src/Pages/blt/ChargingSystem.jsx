@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import BltDashboardToolbar from "../../Components/BltDashboardToolbar";
+import chargingSystemImage from "../../assets/Images/ChargingSystem.png";
 import {
   fetchChargingAlarmSummaryMock,
   fetchChargingAlertDistributionMock,
@@ -250,35 +251,15 @@ html[data-blt-theme="light"] .charging-page {
   display: grid;
   place-items: center;
   border-radius: 30px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  background: rgba(3, 7, 13, 0.78);
   border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
 }
-.furnace-visual {
-  width: min(300px, 100%);
-  aspect-ratio: 1 / 1;
-  border-radius: 36px;
-  position: relative;
-  background:
-    radial-gradient(circle at 50% 38%, rgba(255, 179, 71, 0.75), rgba(255, 138, 0, 0.18) 38%, transparent 52%),
-    linear-gradient(180deg, #16273a, #08111a);
-  border: 1px solid rgba(255, 196, 128, 0.24);
-  box-shadow: inset 0 0 50px rgba(255, 138, 0, 0.14);
-}
-.furnace-visual::before,
-.furnace-visual::after {
-  content: "";
-  position: absolute;
-  left: 12%;
-  width: 76%;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(255,138,0,0.88), transparent);
-}
-.furnace-visual::before {
-  top: 52px;
-}
-.furnace-visual::after {
-  bottom: 52px;
+.charging-system-image {
+  width: 100%;
+  max-height: 440px;
+  object-fit: contain;
+  display: block;
 }
 .charge-lines {
   display: grid;
@@ -930,7 +911,7 @@ export default function ChargingSystem() {
             </p>
             <div className="chip-row">
               <span className="chip">Asset: BLT Charging</span>
-              {/* <span className="chip">Source: Mock API</span> */}
+              <span className="chip">Source: Mock API</span>
               <span className="chip">Refresh: 5 min</span>
             </div>
           </div>
@@ -955,7 +936,7 @@ export default function ChargingSystem() {
                 <div className="schematic-title">Charging flow overview</div>
                 <div className="furnace">
                   <div className="furnace-core">
-                    <div className="furnace-visual" />
+                    <img className="charging-system-image" src={chargingSystemImage} alt="Charging system overview" />
                   </div>
 
                   <div className="charge-lines">
